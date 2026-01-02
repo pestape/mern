@@ -12,9 +12,23 @@ const handleValidationErrors = async (req: Request, res: Response, next: NextFun
 };
 
 export const validateMyUserRequest = [
-    body("name").isString().notEmpty().withMessage("Name must be a string"),
+    body("name").isString().notEmpty().withMessage("User name must be a string"),
     body("addressLine1").isString().notEmpty().withMessage("Address Line 1 must be a string"),
     body("city").isString().notEmpty().withMessage("City must be a string"),
     body("country").isString().notEmpty().withMessage("Country must be a string"),
+    handleValidationErrors,
+];
+
+
+export const validateMyRestaurantRequest = [
+    body("restaurantName").isString().notEmpty().withMessage("Restaurant name must be a string"),
+    body("city").isString().notEmpty().withMessage("City must be a string"),
+    body("country").isString().notEmpty().withMessage("Country must be a string"),
+    body("deliveryPrice").isNumeric().notEmpty().withMessage("Delivery price must be a number"),
+    body("estimatedDeliveryTime").isFloat({min: 0}).notEmpty().withMessage("Estimated delivery time must be a positive number"),
+    body("cuisines").isArray().withMessage("Cuisines must be an array").not().isEmpty().withMessage("Cuisines array cannot be empty"),
+    body("menuItems").isArray().withMessage("Menu items must be an array"),
+    body("menuItems.*.name").isString().notEmpty().withMessage("Menu item name must be a string"),
+    body("menuItems.*.price").isFloat({min: 0}).notEmpty().withMessage("Menu item price must be a positive number"),
     handleValidationErrors,
 ];
