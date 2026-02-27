@@ -22,6 +22,15 @@ services:
     depends_on:
       - mongodb
 
+  stripe:
+    image: stripe/stripe-cli
+    container_name: stripe
+    command: listen --forward-to backend:8000/api/order/checkout/webhook
+    environment:
+      - STRIPE_API_KEY=${STRIPE_API_KEY}
+    depends_on:
+      - backend
+
   frontend:
     build:
       context: ./frontend
